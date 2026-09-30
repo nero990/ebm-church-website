@@ -645,6 +645,14 @@
 
   .give .section-title, .give .gold-rule { color: #fff; }
 
+  .give-tagline {
+    text-align: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 17px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 28px;
+  }
+
   .give-intro {
     max-width: 640px;
     margin: 0 auto 48px;
@@ -653,6 +661,9 @@
     line-height: 1.8;
     color: rgba(255,255,255,0.85);
   }
+
+  .give-intro p { margin-bottom: 16px; }
+  .give-intro p:last-child { margin-bottom: 0; }
 
   .give-ways {
     display: grid;
@@ -668,6 +679,10 @@
     border-radius: 10px;
     padding: 28px 22px;
     text-align: center;
+    width: 100%;
+    display: block;
+    font: inherit;
+    color: inherit;
   }
 
   .give-way-icon {
@@ -701,13 +716,91 @@
     color: rgba(255,255,255,0.65);
   }
 
+  .give-way-toggle {
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .give-way-toggle:hover, .give-way-toggle:focus-visible {
+    background: rgba(201,162,75,0.1);
+    border-color: rgba(201,162,75,0.5);
+    outline: none;
+  }
+
+  .give-way-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--gold-light);
+  }
+
+  /* Bank details modal */
+  .bank-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(8,15,28,0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+  }
+
+  .bank-modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.28s ease;
+  }
+
   .bank-card {
-    background: rgba(255,255,255,0.06);
+    background: linear-gradient(165deg, #182a48 0%, var(--navy-dark) 100%);
+    color: #fff;
     border: 1px solid rgba(201,162,75,0.4);
-    border-radius: 10px;
-    padding: 24px 28px;
-    margin: 0 auto 20px;
-    max-width: 560px;
+    border-radius: 14px;
+    padding: 32px 30px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    transform: translateY(18px) scale(0.97);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+  }
+
+  .bank-modal-overlay.open .bank-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .bank-card-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.7);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .bank-card-close:hover {
+    background: var(--gold);
+    color: var(--navy-dark);
+    border-color: var(--gold);
   }
 
   .give-note {
@@ -1118,14 +1211,19 @@
     <div class="container">
       <h2 class="section-title">Support the Mission</h2>
       <div class="gold-rule"></div>
-      <p class="give-intro">At Enlightening Believers Ministry, your generosity sustains our Sunday services, daily prayer life, bible study, and our outreach to the streets of Dublin &mdash; helping us raise a community of believers for salvation, transformation, and kingdom expansion.</p>
+      <p class="give-tagline">Your generosity helps us make a difference.</p>
+
+      <div class="give-intro">
+        <p>We are committed to transforming lives through the Word of God, community outreach, and practical support for those in need. Your giving sustains that work &mdash; every contribution, regardless of size, is appreciated.</p>
+      </div>
 
       <div class="give-ways">
-        <div class="give-way">
+        <button type="button" class="give-way give-way-toggle" id="bank-transfer-toggle" aria-haspopup="dialog" aria-controls="bank-modal">
           <div class="give-way-icon"><svg viewBox="0 0 24 24"><path d="M12 2 2 7v2h20V7L12 2Zm-8 9v7H3v2h18v-2h-1v-7h-2v7h-3v-7h-2v7h-3v-7H8v7H5v-7H4Z"/></svg></div>
           <h3>Bank Transfer</h3>
-          <p>Give directly via bank transfer using the account details below.</p>
-        </div>
+          <p>Give directly via bank transfer.</p>
+          <span class="give-way-link">View Bank Details &rsaquo;</span>
+        </button>
         <div class="give-way">
           <div class="give-way-icon"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5c0 3.5-5 11-5 11S7 10.5 7 7a5 5 0 0 1 5-5Zm0 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM4 20c0-1.9 3.4-3.2 7-3.6l1 1.6c-3.8.3-6 1.4-6 2v.5h14V20c0-.6-2.2-1.7-6-2l1-1.6c3.6.4 7 1.7 7 3.6v2H4v-2Z"/></svg></div>
           <h3>Give In Person</h3>
@@ -1138,32 +1236,7 @@
         </div>
       </div>
 
-      <div class="bank-card">
-        <h3>Bank Transfer Details</h3>
-        <div class="bank-row">
-          <span class="label">Account Name</span>
-          <span class="value">Enlightening Believers Ministry CLG</span>
-        </div>
-        <div class="bank-row">
-          <span class="label">Bank</span>
-          <span class="value">Allied Irish Banks (AIB), Naas Road, Dublin 22</span>
-        </div>
-        <div class="bank-row">
-          <span class="label">IBAN</span>
-          <span class="value" id="iban-value">IE18 AIBK 9310 0410 6850 99</span>
-          <button class="copy-btn" id="copy-iban" type="button" data-copy="IE18AIBK93100410685099">Copy</button>
-        </div>
-        <div class="bank-row">
-          <span class="label">BIC / SWIFT</span>
-          <span class="value">AIBKIE2D</span>
-        </div>
-        <div class="bank-row">
-          <span class="label">Currency</span>
-          <span class="value">EUR (&euro;)</span>
-        </div>
-      </div>
-
-      <p class="give-note">Gifts are received directly into the church&rsquo;s official bank account above. For questions about giving, <a href="mailto:info@ebmchurch.ie" style="color:var(--gold-light);">contact us</a>.</p>
+      <p class="give-note">Thank you for partnering with us in making a difference.</p>
     </div>
   </section>
 
@@ -1215,6 +1288,34 @@
   </section>
 
 </main>
+
+<div class="bank-modal-overlay" id="bank-modal" role="dialog" aria-modal="true" aria-labelledby="bank-modal-title">
+  <div class="bank-card">
+    <button type="button" class="bank-card-close" id="bank-modal-close" aria-label="Close">&times;</button>
+    <h3 id="bank-modal-title">Bank Transfer Details</h3>
+    <div class="bank-row">
+      <span class="label">Account Name</span>
+      <span class="value">Enlightening Believers Ministry CLG</span>
+    </div>
+    <div class="bank-row">
+      <span class="label">Bank</span>
+      <span class="value">Allied Irish Banks (AIB), Naas Road, Dublin 22</span>
+    </div>
+    <div class="bank-row">
+      <span class="label">IBAN</span>
+      <span class="value" id="iban-value">IE18 AIBK 9310 0410 6850 99</span>
+      <button class="copy-btn" id="copy-iban" type="button" data-copy="IE18AIBK93100410685099">Copy</button>
+    </div>
+    <div class="bank-row">
+      <span class="label">BIC / SWIFT</span>
+      <span class="value">AIBKIE2D</span>
+    </div>
+    <div class="bank-row">
+      <span class="label">Currency</span>
+      <span class="value">EUR (&euro;)</span>
+    </div>
+  </div>
+</div>
 
 <div class="lightbox" id="lightbox">
   <div class="lightbox-close" id="lightbox-close">&times;</div>
@@ -1335,6 +1436,35 @@
         try { document.execCommand('copy'); done(); } catch (e) {}
         document.body.removeChild(temp);
       }
+    });
+  }
+
+  // Bank details modal
+  var bankToggle = document.getElementById('bank-transfer-toggle');
+  var bankModal = document.getElementById('bank-modal');
+  var bankModalClose = document.getElementById('bank-modal-close');
+
+  if (bankToggle && bankModal) {
+    var openBankModal = function () {
+      bankModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      bankModalClose.focus();
+    };
+    var closeBankModal = function () {
+      bankModal.classList.remove('open');
+      document.body.style.overflow = '';
+      bankToggle.focus();
+    };
+
+    bankToggle.addEventListener('click', openBankModal);
+    bankModalClose.addEventListener('click', closeBankModal);
+
+    bankModal.addEventListener('click', function (e) {
+      if (e.target === bankModal) closeBankModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && bankModal.classList.contains('open')) closeBankModal();
     });
   }
 </script>
